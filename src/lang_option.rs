@@ -27,14 +27,6 @@ pub fn lang_option() -> String {
 
         let real_td = tds[1];
 
-
-        // match td {
-        //     Some(val) => td_real = val,
-        //     None => continue,
-        // };
-
-        // let mut td_real = td_real.next_sibling().unwrap();
-
         // lang_vec.push(real_td.text().collect::<Vec<_>>().join(""));
         println!("{}", real_td.text().collect::<Vec<_>>().join(""));
     }
