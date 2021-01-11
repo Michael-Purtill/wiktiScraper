@@ -1,6 +1,7 @@
 
 use iced_test::requester::requester;
 use iced_test::lang_option::lang_option;
+use iced_test::lang_option::cat_2_lemma_link;
 use scraper::{Html, Selector};
 
 fn main() {
@@ -10,7 +11,7 @@ fn main() {
 
     // let doc = Html::parse_document(&res);
 
-    println!("{}", lang_option());
+    println!("{}", cat_2_lemma_link("https://en.wiktionary.org/wiki/Category:Belarusian_language".to_string()));
 
     // let pages_selector = Selector::parse("#mw-pages").unwrap();
     // let a_selector = Selector::parse("a").unwrap();
@@ -18,7 +19,5 @@ fn main() {
     // for element in doc.select(&pages_selector).next().unwrap().select(&a_selector) {
     //     println!("{}", element.text().collect::<Vec<_>>().join(""));
     // }
-
-
-
+    
 }

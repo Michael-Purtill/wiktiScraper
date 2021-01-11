@@ -1,6 +1,11 @@
 use crate::requester::requester;
 use scraper::{Html, Selector};
 
+pub struct name_link {
+    pub name: String,
+    pub link: String,
+}
+
 pub fn lang_option() -> String {
     let url = String::from("https://en.wiktionary.org/wiki/Wiktionary:List_of_languages");
 
@@ -33,4 +38,14 @@ pub fn lang_option() -> String {
 
     return "cool".to_string();
 
+}
+
+pub fn cat_2_lemma_link(link: String) -> String {
+    let split_link = link.split("Category:").collect::<Vec<_>>();
+
+    let lang_name = split_link[1];
+
+    let lang_name = lang_name.split("_").collect::<Vec<_>>()[0];
+
+    format!("https://en.wiktionary.org/wiki/Category:{}_lemmas", lang_name)
 }
