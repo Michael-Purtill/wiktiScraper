@@ -1,7 +1,8 @@
 
 use iced_test::requester::requester;
 use iced_test::lang_option::lang_option;
-use iced_test::lang_option::cat_2_lemma_link;
+use iced_test::lang_option::cat_link_2_lemma_link;
+use iced_test::lang_option::lemma_link_2_pos_links;
 use scraper::{Html, Selector};
 
 fn main() {
@@ -11,7 +12,11 @@ fn main() {
 
     // let doc = Html::parse_document(&res);
 
-    println!("{}", cat_2_lemma_link("https://en.wiktionary.org/wiki/Category:Belarusian_language".to_string()));
+    // println!("{}", cat_link_2_lemma_link("https://en.wiktionary.org/wiki/Category:Belarusian_language".to_string()));
+
+    // println!("{}", lemma_link_2_pos_links("https://en.wiktionary.org/wiki/Category:Czech_lemmas".to_string()));
+
+    lemma_link_2_pos_links("https://en.wiktionary.org/wiki/Category:Chinese_lemmas".to_string());
 
     // let pages_selector = Selector::parse("#mw-pages").unwrap();
     // let a_selector = Selector::parse("a").unwrap();

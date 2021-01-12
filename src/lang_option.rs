@@ -24,7 +24,8 @@ pub fn lang_option() -> String {
     // let mut lang_vec = Vec::new();
 
     for el in trs {
-        let tds: Vec<_> = el.select(&td_selector).collect();
+        let tds: Vec<_> = el.select(&td_selector).collect(); 
+        //{aa, Afar, Cushitic, Latn, null, null, Yes}
 
         if tds.len() < 1 {
             continue;
@@ -40,7 +41,7 @@ pub fn lang_option() -> String {
 
 }
 
-pub fn cat_2_lemma_link(link: String) -> String {
+pub fn cat_link_2_lemma_link(link: String) -> String {
     let split_link = link.split("Category:").collect::<Vec<_>>();
 
     let lang_name = split_link[1];
@@ -48,6 +49,28 @@ pub fn cat_2_lemma_link(link: String) -> String {
     let lang_name = lang_name.split("_").collect::<Vec<_>>()[0];
 
     format!("https://en.wiktionary.org/wiki/Category:{}_lemmas", lang_name)
+}
+
+pub fn lemma_link_2_pos_links(url: String) {
+    let res = requester(url);
+
+    let doc = Html::parse_document(&res);
+
+    let ul_selector = Selector::parse("ul").unwrap();
+    let li_selector = Selector::parse("li").unwrap();
+    let a_selector = Selector::parse("a").unwrap();
+    let list = doc.select(&ul_selector).next().unwrap();
+    let list_items = list.select(&li_selector);
+    
+    for item in list_items {
+        let link = item.select(&a_selector).next().unwrap();
+
+        let href = format!("https://en.wiktionary.org{}", link.value().attr("href").unwrap());
+
+        println!("{}", href);
+    }
+
+
 }
 
 //my name is yening wang!!!!!
