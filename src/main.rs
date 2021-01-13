@@ -1,8 +1,6 @@
 
 use iced_test::requester::requester;
-use iced_test::lang_option::lang_option;
-use iced_test::lang_option::cat_link_2_lemma_link;
-use iced_test::lang_option::lemma_link_2_pos_links;
+use iced_test::lang_option::*;
 use scraper::{Html, Selector};
 
 fn main() {

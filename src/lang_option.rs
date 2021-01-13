@@ -20,12 +20,9 @@ pub fn lang_option() -> String {
     let tables = doc.select(&table_selector).next().unwrap();
     let tbody = tables.select(&tbody_selector).next().unwrap();
     let trs = tbody.select(&tr_selector);
-    
-    // let mut lang_vec = Vec::new();
 
     for el in trs {
         let tds: Vec<_> = el.select(&td_selector).collect(); 
-        //{aa, Afar, Cushitic, Latn, null, null, Yes}
 
         if tds.len() < 1 {
             continue;
@@ -38,7 +35,6 @@ pub fn lang_option() -> String {
     }
 
     return "cool".to_string();
-
 }
 
 pub fn cat_link_2_lemma_link(link: String) -> String {
@@ -69,8 +65,4 @@ pub fn lemma_link_2_pos_links(url: String) {
 
         println!("{}", href);
     }
-
-
 }
-
-//my name is yening wang!!!!!
