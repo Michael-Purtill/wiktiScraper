@@ -1,7 +1,7 @@
 
-use iced_test::requester::requester;
+// use iced_test::requester::requester;
 use iced_test::lang_tools::*;
-use scraper::{Html, Selector};
+// use scraper::{Html, Selector};
 
 fn main() {
     // let url = String::from("https://en.wiktionary.org/w/index.php?title=Category:Czech_nouns");

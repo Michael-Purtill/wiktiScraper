@@ -1,7 +1,8 @@
 use crate::requester::requester;
+use std::str::from_utf8;
 use scraper::{Html, Selector};
 
-pub struct name_link {
+pub struct NameLink {
     pub name: String,
     pub link: String,
 }
@@ -74,27 +75,23 @@ pub fn pos_link_2_word_links(url: String) {
 
     let div_selector = Selector::parse("#mw-pages").unwrap();
     let div_content_selector = Selector::parse(".mw-content-ltr").unwrap();
-    let group_selector = Selector::parse(".mw-category-group").unwrap();
     let a_selector = Selector::parse("a").unwrap();
 
     let div = doc.select(&div_selector).next().unwrap();
     let content = div.select(&div_content_selector).next().unwrap();
-    let groups = content.select(&group_selector);
-
-    let groups: Vec<_> = groups.collect();
-
-    let group = if groups.len() > 1 {
-        groups[1]
-    } else {
-        groups[0]
-    };
-
+    
     let links = content.select(&a_selector);
 
     for link in links {
         let href = format!("https://en.wiktionary.org{}", link.value().attr("href").unwrap());
 
-        println!("{}", href);
+        let text = link.text().collect::<Vec<_>>().join("");
+
+        let textvec = text.split("Appendix:").collect::<Vec<_>>();
+
+        if textvec.len() == 1 {
+            println!("{}", href);
+        }
     }
 
 }
