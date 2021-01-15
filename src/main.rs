@@ -14,7 +14,7 @@ fn main() {
 
     // println!("{}", lemma_link_2_pos_links("https://en.wiktionary.org/wiki/Category:Czech_lemmas".to_string()));
 
-    pos_link_2_word_links("https://en.wiktionary.org/wiki/Category:Chinese_nouns".to_string());
+    pos_link_2_word_links("https://en.wiktionary.org/wiki/Category:Czech_verbs".to_string());
 
     // let pages_selector = Selector::parse("#mw-pages").unwrap();
     // let a_selector = Selector::parse("a").unwrap();

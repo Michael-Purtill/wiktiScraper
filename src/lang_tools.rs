@@ -1,5 +1,4 @@
 use crate::requester::requester;
-use std::str::from_utf8;
 use scraper::{Html, Selector};
 
 pub struct NameLink {
@@ -87,9 +86,7 @@ pub fn pos_link_2_word_links(url: String) {
 
         let text = link.text().collect::<Vec<_>>().join("");
 
-        let textvec = text.split("Appendix:").collect::<Vec<_>>();
-
-        if textvec.len() == 1 {
+        if !text.contains("Appendix:") {
             println!("{}", href);
         }
     }
