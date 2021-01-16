@@ -93,7 +93,7 @@ pub fn pos_link_2_word_links(url: &String) {
 }
 
 pub fn pos_category_looper(url: &String) {
-    // pos_link_2_word_links(url);
+    pos_link_2_word_links(url);
 
     let res = requester(url);
     let doc = Html::parse_document(&res);
