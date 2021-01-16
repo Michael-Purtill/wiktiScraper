@@ -1,5 +1,5 @@
-pub fn requester(url: String) -> String {
-    let res = reqwest::blocking::get(&url);
+pub fn requester(url: &String) -> String {
+    let res = reqwest::blocking::get(url);
 
     let content = match res {
         Ok(good_resp) => good_resp,

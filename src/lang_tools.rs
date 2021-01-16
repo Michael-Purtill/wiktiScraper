@@ -9,7 +9,7 @@ pub struct NameLink {
 pub fn lang_option() -> String {
     let url = String::from("https://en.wiktionary.org/wiki/Wiktionary:List_of_languages");
 
-    let res = requester(url);
+    let res = requester(&url);
 
     let doc = Html::parse_document(&res);
 
@@ -37,7 +37,7 @@ pub fn lang_option() -> String {
     return "cool".to_string();
 }
 
-pub fn cat_link_2_lemma_link(link: String) -> String {
+pub fn cat_link_2_lemma_link(link: &String) -> String {
     let split_link = link.split("Category:").collect::<Vec<_>>();
 
     let lang_name = split_link[1];
@@ -47,7 +47,7 @@ pub fn cat_link_2_lemma_link(link: String) -> String {
     format!("https://en.wiktionary.org/wiki/Category:{}_lemmas", lang_name)
 }
 
-pub fn lemma_link_2_pos_links(url: String) {
+pub fn lemma_link_2_pos_links(url: &String) {
     let res = requester(url);
 
     let doc = Html::parse_document(&res);
@@ -67,7 +67,7 @@ pub fn lemma_link_2_pos_links(url: String) {
     }
 }
 
-pub fn pos_link_2_word_links(url: String) {
+pub fn pos_link_2_word_links(url: &String) {
     let res = requester(url);
 
     let doc = Html::parse_document(&res);
@@ -90,5 +90,49 @@ pub fn pos_link_2_word_links(url: String) {
             println!("{}", href);
         }
     }
+}
 
+pub fn pos_category_looper(url: &String) {
+    // pos_link_2_word_links(url);
+
+    let res = requester(url);
+    let doc = Html::parse_document(&res);
+
+    let div_selector = Selector::parse("#mw-pages").unwrap();
+    let a_selector = Selector::parse("a").unwrap();
+
+    let div = doc.select(&div_selector).next().unwrap();
+
+    let links: Vec<_> = div.select(&a_selector).collect();
+
+    let first_two_links = &links[0..2];
+
+    let mut link = if first_two_links[0].text().collect::<Vec<_>>().join("").contains("next page") {
+        format!("https://en.wiktionary.org{}", first_two_links[0].value().attr("href").unwrap())
+    } else if first_two_links[1].text().collect::<Vec<_>>().join("").contains("next page") {
+        format!("https://en.wiktionary.org{}", first_two_links[1].value().attr("href").unwrap())
+    } else {
+        "no links".to_string()
+    };
+
+    while link != "no links" {
+        pos_link_2_word_links(&link);
+
+        let res = requester(&link);
+        let doc = Html::parse_document(&res);
+
+        let div = doc.select(&div_selector).next().unwrap();
+
+        let links: Vec<_> = div.select(&a_selector).collect();
+
+        let first_two_links = &links[0..2];
+
+        link = if first_two_links[0].text().collect::<Vec<_>>().join("").contains("next page") {
+            format!("https://en.wiktionary.org{}", first_two_links[0].value().attr("href").unwrap())
+        } else if first_two_links[1].text().collect::<Vec<_>>().join("").contains("next page") {
+            format!("https://en.wiktionary.org{}", first_two_links[1].value().attr("href").unwrap())
+        } else {
+            "no links".to_string()
+        };
+    }
 }
