@@ -1,12 +1,34 @@
 use crate::requester::requester;
 use scraper::{Html, Selector};
+use std::fmt;
 
+#[derive(Debug, Clone, Eq)]
 pub struct NameLink {
     pub name: String,
     pub link: String,
 }
 
-pub fn lang_option() -> String {
+impl Default for NameLink {
+    fn default() -> NameLink {
+        NameLink {name: "".to_string(), link: "".to_string()}
+    }
+}
+
+impl PartialEq for NameLink {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name && self.link == other.link
+    }
+}
+
+impl fmt::Display for NameLink {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.name)
+    }
+}
+
+pub fn lang_option() -> Vec<NameLink> {
+    let mut lang_vec = Vec::new();
+
     let url = String::from("https://en.wiktionary.org/wiki/Wiktionary:List_of_languages");
 
     let res = requester(&url);
@@ -30,11 +52,11 @@ pub fn lang_option() -> String {
 
         let real_td = tds[1];
 
-        // lang_vec.push(real_td.text().collect::<Vec<_>>().join(""));
-        println!("{}", real_td.text().collect::<Vec<_>>().join(""));
+        lang_vec.push(NameLink {link: real_td.text().collect::<Vec<_>>().join(""), name: real_td.text().collect::<Vec<_>>().join("")});
+        // println!("{}", real_td.text().collect::<Vec<_>>().join(""));
     }
 
-    return "cool".to_string();
+    return lang_vec;
 }
 
 pub fn cat_link_2_lemma_link(link: &String) -> String {

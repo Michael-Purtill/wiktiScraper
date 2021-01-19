@@ -2,45 +2,69 @@
 // use iced_test::requester::requester;
 use iced_test::lang_tools::*;
 use iced::{
-    button, executor, scrollable, text_input, Align, Application, Button, Checkbox,
-    Column, Command, Container, Element, Font, HorizontalAlignment, Length,
-    Row, Scrollable, Settings, Text, TextInput,
+    pick_list, scrollable, Align, Container, Element, Length, PickList,
+    Sandbox, Scrollable, Settings, Space, Text,
 };
-// use scraper::{Html, Selector};
 
-// fn main() {
-//     pos_category_looper(&"https://en.wiktionary.org/wiki/Category:Czech_adverbs".to_string());
-// }
-
-
-
-fn main() -> iced::Result {
-    Hello::run(Settings::default())
+pub fn main() -> iced::Result {
+    Example::run(Settings::default())
 }
 
-struct Hello;
+#[derive(Default)]
+struct Example {
+    scroll: scrollable::State,
+    pick_list: pick_list::State<NameLink>,
+    selected_language: NameLink,
+}
 
-impl Application for Hello {
-    type Executor = executor::Default;
-    type Message = ();
-    type Flags = ();
+#[derive(Debug, Clone)]
+enum Message {
+    LanguageSelected(NameLink),
+}
 
-    fn new(_flags: ()) -> (Hello, Command<Self::Message>) {
-        (Hello, Command::none())
+impl Sandbox for Example {
+    type Message = Message;
+
+    fn new() -> Self {
+        Self::default()
     }
 
     fn title(&self) -> String {
         String::from("WiktiScraper")
     }
 
-    fn update(&mut self, _message: Self::Message) -> Command<Self::Message> {
-        Command::none()
+    fn update(&mut self, message: Message) {
+        match message {
+            Message::LanguageSelected(language) => {
+                self.selected_language = language;
+            }
+        }
     }
 
-    fn view(&mut self) -> Element<Self::Message> {
-        Text::new("Welcome to WiktiScraper").width(Length::Fill)
-        .size(100)
-        .color([0.5, 0.5, 0.5])
-        .horizontal_alignment(HorizontalAlignment::Center).into()
+    fn view(&mut self) -> Element<Message> {
+        let langs = lang_option();
+
+        let pick_list = PickList::new(
+            &mut self.pick_list,
+            langs,
+            Some(self.selected_language.clone()),
+            Message::LanguageSelected,
+        );
+
+        let mut content = Scrollable::new(&mut self.scroll)
+            .width(Length::Fill)
+            .align_items(Align::Center)
+            .spacing(10)
+            .push(Text::new("Choose a Language"))
+            .push(pick_list);
+
+        content = content.push(Space::with_height(Length::Units(600)));
+
+        Container::new(content)
+            .width(Length::Fill)
+            .height(Length::Fill)
+            .center_x()
+            .center_y()
+            .into()
     }
 }
