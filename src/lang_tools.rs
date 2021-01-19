@@ -39,6 +39,7 @@ pub fn lang_option() -> Vec<NameLink> {
     let tbody_selector = Selector::parse("tbody").unwrap();
     let tr_selector = Selector::parse("tr").unwrap();
     let td_selector = Selector::parse("td").unwrap();
+    let a_selector = Selector::parse("a").unwrap();
     let tables = doc.select(&table_selector).next().unwrap();
     let tbody = tables.select(&tbody_selector).next().unwrap();
     let trs = tbody.select(&tr_selector);
@@ -52,7 +53,9 @@ pub fn lang_option() -> Vec<NameLink> {
 
         let real_td = tds[1];
 
-        lang_vec.push(NameLink {link: real_td.text().collect::<Vec<_>>().join(""), name: real_td.text().collect::<Vec<_>>().join("")});
+        let anchor = real_td.select(&a_selector).next().unwrap();
+
+        lang_vec.push(NameLink {name: real_td.text().collect::<Vec<_>>().join(""), link: format!("https://en.wiktionary.org{}",anchor.value().attr("href").unwrap())});
         // println!("{}", real_td.text().collect::<Vec<_>>().join(""));
     }
 
