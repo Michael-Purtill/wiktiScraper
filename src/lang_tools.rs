@@ -26,7 +26,7 @@ impl fmt::Display for NameLink {
     }
 }
 
-pub fn lang_option() -> Vec<NameLink> {
+pub async fn lang_option() -> Vec<NameLink> {
     let mut lang_vec = Vec::new();
 
     let url = String::from("https://en.wiktionary.org/wiki/Wiktionary:List_of_languages");

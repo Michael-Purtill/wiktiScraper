@@ -15,11 +15,13 @@ struct Example {
     scroll: scrollable::State,
     pick_list: pick_list::State<NameLink>,
     selected_language: NameLink,
+    lang_list: Vec::<NameLink>,
 }
 
 #[derive(Debug, Clone)]
 enum Message {
     LanguageSelected(NameLink),
+    Loaded(Vec::<NameLink>),
 }
 
 impl Application for Example {
@@ -28,7 +30,7 @@ impl Application for Example {
     type Message = Message;
 
     fn new(_flags: ()) -> (Example, Command<Self::Message>){
-        (Self::default(), Command::none())
+        (Self::default(), Command::perform(lang_option(), Message::Loaded))
     }
 
     fn title(&self) -> String {
@@ -40,17 +42,21 @@ impl Application for Example {
             Message::LanguageSelected(language) => {
                 self.selected_language = language;
             }
+
+            Message::Loaded(list) => {
+                self.lang_list = list;
+            }
         }
 
         Command::none()
     }
 
     fn view(&mut self) -> Element<Message> {
-        let langs = lang_option();
+        // let langs = lang_option();
 
         let pick_list = PickList::new(
             &mut self.pick_list,
-            langs,
+            self.lang_list.clone(),
             Some(self.selected_language.clone()),
             Message::LanguageSelected,
         );
