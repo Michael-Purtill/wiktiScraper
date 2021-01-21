@@ -3,7 +3,7 @@
 use iced_test::lang_tools::*;
 use iced::{
     pick_list, scrollable, Align, Container, Element, Length, PickList,
-    Sandbox, Scrollable, Settings, Space, Text,
+    Scrollable, Settings, Space, Text, Application, Command, executor,
 };
 
 pub fn main() -> iced::Result {
@@ -22,23 +22,27 @@ enum Message {
     LanguageSelected(NameLink),
 }
 
-impl Sandbox for Example {
+impl Application for Example {
+    type Executor = executor::Default;
+    type Flags = ();
     type Message = Message;
 
-    fn new() -> Self {
-        Self::default()
+    fn new(_flags: ()) -> (Example, Command<Self::Message>){
+        (Self::default(), Command::none())
     }
 
     fn title(&self) -> String {
         String::from("WiktiScraper")
     }
 
-    fn update(&mut self, message: Message) {
+    fn update(&mut self, message: Message) -> Command<Self::Message> {
         match message {
             Message::LanguageSelected(language) => {
                 self.selected_language = language;
             }
         }
+
+        Command::none()
     }
 
     fn view(&mut self) -> Element<Message> {

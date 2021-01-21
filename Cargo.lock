@@ -1270,6 +1270,7 @@ dependencies = [
 name = "iced_test"
 version = "0.1.0"
 dependencies = [
+ "futures",
  "iced",
  "reqwest",
  "scraper",
