@@ -1,6 +1,8 @@
 use crate::requester::requester;
 use scraper::{Html, Selector};
 use std::fmt;
+use select::document::Document;
+use select::predicate::{Attr, Class, Name, Predicate};
 
 #[derive(Debug, Clone, Eq)]
 pub struct NameLink {
@@ -160,4 +162,37 @@ pub fn pos_category_looper(url: &String) {
             "no links".to_string()
         };
     }
+}
+
+pub fn get_section_by_lang(url: &String, lang: &String) -> String{
+    let res = requester(url);
+    let doc = Document::from(res.as_str());
+
+    let h2 = doc.find(Attr("id", lang.as_str())).next().unwrap().parent().unwrap();
+
+    let mut my_html = Vec::new();
+
+    my_html.push(h2.html());
+
+    // println!("{}", h2.html());
+
+    let mut next = h2.next().unwrap();
+
+
+    loop {
+        let mut name = "";
+        match next.name() {
+            Some(x) => name = x,
+            None =>{next = next.next().unwrap(); continue},
+        }
+
+        if (name == "h2") {
+            break;
+        }
+
+        my_html.push(next.html());
+        // println!("{}", next.html());
+        next = next.next().unwrap();
+    }
+    return my_html.join("");
 }
