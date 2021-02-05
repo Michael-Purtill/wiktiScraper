@@ -7,7 +7,7 @@ use iced::{
 };
 
 pub fn main() -> iced::Result {
-    // get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string());
+    get_headers_by_section(get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string()));
     Example::run(Settings::default())
 }
 

@@ -174,10 +174,7 @@ pub fn get_section_by_lang(url: &String, lang: &String) -> String{
 
     my_html.push(h2.html());
 
-    // println!("{}", h2.html());
-
     let mut next = h2.next().unwrap();
-
 
     loop {
         let mut name = "";
@@ -186,13 +183,37 @@ pub fn get_section_by_lang(url: &String, lang: &String) -> String{
             None =>{next = next.next().unwrap(); continue},
         }
 
-        if (name == "h2") {
+        if name == "h2" {
             break;
         }
 
         my_html.push(next.html());
-        // println!("{}", next.html());
+
         next = next.next().unwrap();
     }
     return my_html.join("");
+}
+
+pub fn get_headers_by_section(section: String) -> Vec<String> {
+    let doc = Document::from(section.as_str());
+
+    // let h2 = doc.find(Attr("id", lang.as_str())).next().unwrap().parent().unwrap();
+
+    let mut headers: Vec<String> = Vec::new();
+
+    for h in doc.find(Name("h3")) {
+        headers.push(h.text());
+    }
+
+    for h in doc.find(Name("h4")) {
+        headers.push(h.text());
+    }
+
+    for h in doc.find(Name("h5")) {
+        headers.push(h.text());
+    }
+
+    println!("{}", headers.join(" "));
+
+    return headers;
 }
