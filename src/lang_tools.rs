@@ -10,6 +10,12 @@ pub struct NameLink {
     pub link: String,
 }
 
+#[derive(Debug, Clone, Eq)]
+pub struct CNode {
+    pub el: String,
+    pub content: String,
+}
+
 impl Default for NameLink {
     fn default() -> NameLink {
         NameLink {name: "".to_string(), link: "".to_string()}
@@ -25,6 +31,24 @@ impl PartialEq for NameLink {
 impl fmt::Display for NameLink {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.name)
+    }
+}
+
+impl Default for CNode {
+    fn default() -> CNode {
+        CNode {el: "".to_string(), content: "".to_string()}
+    }
+}
+
+impl PartialEq for CNode {
+    fn eq(&self, other: &Self) -> bool {
+        self.el == other.el && self.content == other.content
+    }
+}
+
+impl fmt::Display for CNode {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.content)
     }
 }
 
@@ -216,4 +240,52 @@ pub fn get_headers_by_section(section: String) -> Vec<String> {
     println!("{}", headers.join(" "));
 
     return headers;
+}
+
+pub fn get_page_content(section: String) -> String {
+    let doc = Document::from(section.as_str());
+
+    let mut content: Vec<String> = Vec::new();
+
+    for h in doc.find(Name("h3")) {
+        let mut sibling = h.next();
+
+        while match sibling {
+            Some(_x) => true,
+            None => false,
+        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
+            content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
+            sibling = sibling.unwrap().next();
+        }
+
+    }
+
+    for h in doc.find(Name("h4")) {
+        let mut sibling = h.next();
+
+        while match sibling {
+            Some(_x) => true,
+            None => false,
+        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
+            content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
+            sibling = sibling.unwrap().next();
+        }
+    }
+
+    for h in doc.find(Name("h5")) {
+        let mut sibling = h.next();
+
+        while match sibling {
+            Some(_x) => true,
+            None => false,
+        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
+            content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
+            sibling = sibling.unwrap().next();
+        }
+    }
+
+
+    
+    println!("{}", content.join(" "));
+    return "".to_string();
 }
