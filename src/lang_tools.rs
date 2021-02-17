@@ -16,6 +16,14 @@ pub struct CNode {
     pub content: String,
 }
 
+#[derive(Debug, Clone, Eq)]
+pub struct section {
+    pub name: String,
+    pub content: String,
+}
+
+
+
 impl Default for NameLink {
     fn default() -> NameLink {
         NameLink {name: "".to_string(), link: "".to_string()}
@@ -49,6 +57,24 @@ impl PartialEq for CNode {
 impl fmt::Display for CNode {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.content)
+    }
+}
+
+impl Default for section {
+    fn default() -> section {
+        section {name: "".to_string(), content: "".to_string()}
+    }
+}
+
+impl PartialEq for section {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name && self.content == other.content
+    }
+}
+
+impl fmt::Display for section {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}\n{}", self.name, self.content)
     }
 }
 
