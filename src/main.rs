@@ -7,7 +7,7 @@ use iced::{
 };
 
 pub fn main() -> iced::Result {
-    get_page_content(get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string()));
+    // get_page_content(get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string()));
     Example::run(Settings::default())
 }
 
@@ -17,6 +17,7 @@ struct Example {
     pick_list: pick_list::State<NameLink>,
     selected_language: NameLink,
     lang_list: Vec::<NameLink>,
+    contents: Vec::<section>,
 }
 
 #[derive(Debug, Clone)]
@@ -68,6 +69,13 @@ impl Application for Example {
             .spacing(10)
             .push(Text::new("Choose a Language"))
             .push(pick_list);
+
+        let page_sections = get_page_content(get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string()));
+
+        for s in page_sections {
+            content = content.push(Text::new(s.name));
+            content = content.push(Text::new(s.content));
+        }
 
         content = content.push(Space::with_height(Length::Units(600)));
 

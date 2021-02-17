@@ -268,50 +268,64 @@ pub fn get_headers_by_section(section: String) -> Vec<String> {
     return headers;
 }
 
-pub fn get_page_content(section: String) -> String {
+pub fn get_page_content(section: String) -> Vec<section> {
     let doc = Document::from(section.as_str());
 
     let mut content: Vec<String> = Vec::new();
 
+    let mut sections: Vec<section> = Vec::new();
+
     for h in doc.find(Name("h3")) {
         let mut sibling = h.next();
+        let mut local_content: Vec<String> = Vec::new();
 
         while match sibling {
             Some(_x) => true,
             None => false,
         } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
             content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
+            local_content.push(sibling.unwrap().inner_html());
             sibling = sibling.unwrap().next();
         }
+
+        sections.push(section {name: h.text(), content: local_content.join("")});
 
     }
 
     for h in doc.find(Name("h4")) {
         let mut sibling = h.next();
+        let mut local_content: Vec<String> = Vec::new();
 
         while match sibling {
             Some(_x) => true,
             None => false,
         } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
             content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
+            local_content.push(sibling.unwrap().inner_html());
             sibling = sibling.unwrap().next();
         }
+
+        sections.push(section {name: h.text(), content: local_content.join("")});
     }
 
     for h in doc.find(Name("h5")) {
         let mut sibling = h.next();
+        let mut local_content: Vec<String> = Vec::new();
 
         while match sibling {
             Some(_x) => true,
             None => false,
         } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
             content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
+            local_content.push(sibling.unwrap().inner_html());
             sibling = sibling.unwrap().next();
         }
+
+        sections.push(section {name: h.text(), content: local_content.join("")});
     }
 
 
     
-    println!("{}", content.join(" "));
-    return "".to_string();
+    // println!("{}", content.join(" "));
+    return sections;
 }
