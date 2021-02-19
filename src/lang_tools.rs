@@ -282,9 +282,10 @@ pub fn get_page_content(section: String) -> Vec<section> {
         while match sibling {
             Some(_x) => true,
             None => false,
-        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
-            content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
-            local_content.push(sibling.unwrap().inner_html());
+        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" && match sibling.unwrap().attr("class") {None => true, Some(v) => if !v.contains("thumb") {true} else {false}} {
+            content.push(sibling.unwrap().html()); //unwrapping here is fine becuase we already matched in the predicate.
+            local_content.push(sibling.unwrap().html());
+            // match sibling.unwrap().attr("class") {None => (), Some(v) => println!("{}", v)}
             sibling = sibling.unwrap().next();
         }
 
@@ -299,9 +300,10 @@ pub fn get_page_content(section: String) -> Vec<section> {
         while match sibling {
             Some(_x) => true,
             None => false,
-        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
-            content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
-            local_content.push(sibling.unwrap().inner_html());
+        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" && match sibling.unwrap().attr("class") {None => true, Some(v) => if !v.contains("thumb") {true} else {false}}  {
+            content.push(sibling.unwrap().html()); //unwrapping here is fine becuase we already matched in the predicate.
+            local_content.push(sibling.unwrap().html());
+            // match sibling.unwrap().attr("class") {None => (), Some(v) => println!("{}", v)}
             sibling = sibling.unwrap().next();
         }
 
@@ -315,9 +317,10 @@ pub fn get_page_content(section: String) -> Vec<section> {
         while match sibling {
             Some(_x) => true,
             None => false,
-        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" {
-            content.push(sibling.unwrap().inner_html()); //unwrapping here is fine becuase we already matched in the predicate.
-            local_content.push(sibling.unwrap().inner_html());
+        } && sibling.unwrap().name().unwrap() != "h3" && sibling.unwrap().name().unwrap() != "h4" && sibling.unwrap().name().unwrap() != "h5" && sibling.unwrap().name().unwrap() != "hr" && match sibling.unwrap().attr("class") {None => true, Some(v) => if !v.contains("thumb") {true} else {false}} {
+            content.push(sibling.unwrap().html()); //unwrapping here is fine becuase we already matched in the predicate.
+            local_content.push(sibling.unwrap().html());
+            // match sibling.unwrap().attr("class") {None => (), Some(v) => println!("{}", v)}
             sibling = sibling.unwrap().next();
         }
 
