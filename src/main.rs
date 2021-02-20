@@ -1,10 +1,11 @@
-
 // use iced_test::requester::requester;
-use iced_test::lang_tools::*;
 use iced::{
-    pick_list, scrollable, Align, Container, Element, Length, PickList,
-    Scrollable, Settings, Space, Text, Application, Command, executor,
+    executor, pick_list, scrollable, Align, Application, Command, Container, Element, Length,
+    PickList, Scrollable, Settings, Space, Text,
 };
+use iced_test::lang_tools::*;
+use select::document::Document;
+use select::predicate::{Attr, Class, Name, Predicate};
 
 pub fn main() -> iced::Result {
     // get_page_content(get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string()));
@@ -16,14 +17,14 @@ struct Example {
     scroll: scrollable::State,
     pick_list: pick_list::State<NameLink>,
     selected_language: NameLink,
-    lang_list: Vec::<NameLink>,
-    contents: Vec::<section>,
+    lang_list: Vec<NameLink>,
+    contents: Vec<section>,
 }
 
 #[derive(Debug, Clone)]
 enum Message {
     LanguageSelected(NameLink),
-    Loaded(Vec::<NameLink>),
+    Loaded(Vec<NameLink>),
 }
 
 impl Application for Example {
@@ -31,8 +32,11 @@ impl Application for Example {
     type Flags = ();
     type Message = Message;
 
-    fn new(_flags: ()) -> (Example, Command<Self::Message>){
-        (Self::default(), Command::perform(lang_option(), Message::Loaded))
+    fn new(_flags: ()) -> (Example, Command<Self::Message>) {
+        (
+            Self::default(),
+            Command::perform(lang_option(), Message::Loaded),
+        )
     }
 
     fn title(&self) -> String {
@@ -70,11 +74,25 @@ impl Application for Example {
             .push(Text::new("Choose a Language"))
             .push(pick_list);
 
-        let page_sections = get_page_content(get_section_by_lang(&"https://en.wiktionary.org/wiki/pes".to_string(), &"Czech".to_string()));
+        let page_sections = get_page_content(get_section_by_lang(
+            &"https://en.wiktionary.org/wiki/pes".to_string(),
+            &"Czech".to_string(),
+        ));
 
         for s in page_sections {
-            content = content.push(Text::new(s.name));
-            content = content.push(Text::new(s.content));
+            let doc = Document::from(s.content.as_str());
+
+            let node = doc.nth(3).unwrap();
+
+            println!("{}", node.name().unwrap());
+
+            if (node.name().unwrap() == "p") {
+                let header = Text::new(s.name);
+                let value = Text::new(node.text());
+                
+                content = content.push(header).push(value);
+
+            }
         }
 
         content = content.push(Space::with_height(Length::Units(600)));
