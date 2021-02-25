@@ -82,16 +82,27 @@ impl Application for Example {
         for s in page_sections {
             let doc = Document::from(s.content.as_str());
 
-            let node = doc.nth(3).unwrap();
+            let node = doc.nth(2).unwrap();
 
-            println!("{}", node.name().unwrap());
+            // if s.name == "Noun[edit]" {
+            //     println!("{}", node.name().unwrap());
+            // }
 
-            if (node.name().unwrap() == "p") {
-                let header = Text::new(s.name);
-                let value = Text::new(node.text());
-                
-                content = content.push(header).push(value);
+            for n in node.children() {
+                if n.name().unwrap() == "p" {
+                    let header = Text::new(s.name.to_string());
+                    let value = Text::new(node.text());
 
+                    content = content.push(header).push(value);
+                }
+
+                if n.name().unwrap() == "ul" || node.name().unwrap() == "ol" {
+                    //should loop over the node's children here, but get entire text content for now
+                    let header = Text::new(s.name.to_string());
+                    let value = Text::new(node.text());
+
+                    content = content.push(header).push(value);
+                }
             }
         }
 
