@@ -140,7 +140,7 @@ pub fn lemma_link_2_pos_links(url: &String) {
 
         let href = format!("https://en.wiktionary.org{}", link.value().attr("href").unwrap());
 
-        println!("{}", href);
+        // println!("{}", href);
     }
 }
 
@@ -164,7 +164,7 @@ pub fn pos_link_2_word_links(url: &String) {
         let text = link.text().collect::<Vec<_>>().join("");
 
         if !text.contains("Appendix:") {
-            println!("{}", href);
+            // println!("{}", href);
         }
     }
 }
@@ -263,7 +263,7 @@ pub fn get_headers_by_section(section: String) -> Vec<String> {
         headers.push(h.text());
     }
 
-    println!("{}", headers.join(" "));
+    // println!("{}", headers.join(" "));
 
     return headers;
 }

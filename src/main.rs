@@ -84,11 +84,9 @@ impl Application for Example {
 
             let node = doc.nth(2).unwrap();
 
-            // if s.name == "Noun[edit]" {
-            //     println!("{}", node.name().unwrap());
-            // }
-
             for n in node.children() {
+                // println!("{}", n.name().unwrap());
+
                 if n.name().unwrap() == "p" {
                     let header = Text::new(s.name.to_string());
                     let value = Text::new(node.text());
@@ -102,6 +100,67 @@ impl Application for Example {
                     let value = Text::new(node.text());
 
                     content = content.push(header).push(value);
+                }
+
+                if n.name().unwrap() == "div" {
+                    let mut className = match n.attr("class") {
+                        Some(v) => v,
+                        None => "",
+                    };
+
+                    let mut className3 = "";
+
+                    if className == "NavFrame" {
+                        let mut tableNode = n;
+                        
+
+                        for c in n.children() {
+                            let className2 = match c.attr("class") {
+                                Some(v) => v,
+                                None => "",
+                            };
+
+                            if className2 == "NavContent" {
+                                tableNode = c;
+                                className3 = "NavContent";
+                                break;
+                            }
+
+                            else {
+                                className3 = "";
+                            }
+                        }
+
+                        let nodeName = match tableNode.name() {
+                            Some(v) => v,
+                            None => "",
+                        };
+
+                        if nodeName == "div" && className3 == "NavContent" {
+                            let tabDoc = Document::from(tableNode.inner_html().as_str());
+                            let table = doc.find(Name("tbody")).next().unwrap();
+                            
+
+                            
+
+                            // let tbody = table.first_child().unwrap();
+                            // println!("{}", table.html());
+                            for tr in table.children() {
+                                println!("{}", tr.html());
+                                for td in tr.children() {
+                                    // println!("{}", td.html());
+
+                                    match td.name() {
+                                        Some(v) => content = content.push(Text::new(v)).push(Text::new(td.text())),
+                                        None => continue,
+                                    }
+                                    
+                                }
+                            }
+                            
+
+                        } 
+                    }
                 }
             }
         }
