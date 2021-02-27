@@ -136,7 +136,7 @@ impl Application for Example {
                             None => "",
                         };
 
-                        if nodeName == "div" && className3 == "NavContent" {
+                        if nodeName == "div" && className3.contains("NavContent") {
                             let tabDoc = Document::from(tableNode.inner_html().as_str());
                             let table = doc.find(Name("tbody")).next().unwrap();
                             
@@ -148,7 +148,7 @@ impl Application for Example {
                             for tr in table.children() {
                                 println!("{}", tr.html());
                                 for td in tr.children() {
-                                    // println!("{}", td.html());
+                                    // println!("{}", td.html());d 
 
                                     match td.name() {
                                         Some(v) => content = content.push(Text::new(v)).push(Text::new(td.text())),
