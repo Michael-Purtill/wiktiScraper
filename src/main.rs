@@ -1,7 +1,7 @@
 // use iced_test::requester::requester;
 use iced::{
     executor, pick_list, scrollable, Align, Application, Command, Container, Element, Length,
-    PickList, Scrollable, Settings, Space, Text,
+    PickList, Scrollable, Settings, Space, Text, Row,
 };
 use iced_test::lang_tools::*;
 use select::document::Document;
@@ -91,6 +91,8 @@ impl Application for Example {
                     let header = Text::new(s.name.to_string());
                     let value = Text::new(node.text());
 
+
+
                     content = content.push(header).push(value);
                 }
 
@@ -147,18 +149,21 @@ impl Application for Example {
                             // println!("{}", table.html());
                             for tr in table.children() {
                                 println!("{}", tr.html());
+                                let mut row = Row::new();
                                 for td in tr.children() {
-                                    // println!("{}", td.html());d 
+                                    // println!("{}", td.html());
+                                    
+                                    
 
                                     match td.name() {
-                                        Some(v) => content = content.push(Text::new(v)).push(Text::new(td.text())),
+                                        Some(v) => row = row.push(Text::new(" ")).push(Text::new(td.text())).push(Text::new(" ")),
+                                        // content = content.push(Text::new(v)).push(Text::new(td.text())),
                                         None => continue,
                                     }
                                     
                                 }
+                                content = content.push(row);
                             }
-                            
-
                         } 
                     }
                 }
